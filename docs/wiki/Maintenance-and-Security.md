@@ -35,9 +35,9 @@ service cloud.firestore {
 }
 ```
 
-## 3. Storage Folders
-*   All profile photos are stored in the `/photos` directory in Cloud Storage.
-*   The path format is usually `/photos/{userId}_{timestamp}`.
+## 3. Storage Folders & Data
+*   **Photos**: All profile photos are stored in the `/highlights/{YYYY-MM}/` directory in Cloud Storage.
+*   **Submissions**: Each document in Firestore contains a `status` field which can be `pending` or `archived`. This is used by the Admin Dashboard to organize the view.
 
 ## 4. Updates & Deployment
 The app is built with **Vite** and **React**.
