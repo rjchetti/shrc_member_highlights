@@ -76,7 +76,15 @@ const AdminPanel = () => {
                 <h3>{sub.fullName}</h3>
                 <p className="sub-meta">{sub.clubName}</p>
                 <p className="sub-role">{sub.professionalTitle} @ {sub.company}</p>
-                <p className="sub-text">{sub.highlightText}</p>
+                
+                {sub.highlightTitle && (
+                  <p className="sub-title-preview">{sub.highlightTitle}</p>
+                )}
+                
+                <div 
+                  className="sub-text-preview" 
+                  dangerouslySetInnerHTML={{ __html: sub.highlightText }} 
+                />
               </div>
               <div className="selection-indicator">
                 {selectedIds.has(sub.id) && <Check size={24} color="#003399" />}
@@ -131,6 +139,7 @@ const AdminPanel = () => {
         }
         .sub-info {
           flex: 1;
+          overflow: hidden;
         }
         .sub-meta {
           color: var(--rotary-blue);
@@ -142,9 +151,20 @@ const AdminPanel = () => {
           margin-bottom: 0.75rem;
           color: #666;
         }
-        .sub-text {
+        .sub-title-preview {
+          font-weight: 800;
+          color: #333;
+          margin-bottom: 0.5rem;
+          font-size: 1.1rem;
+        }
+        .sub-text-preview {
           font-size: 1rem;
-          line-height: 1.5;
+          line-height: 1.6;
+          color: #444;
+        }
+        .sub-text-preview a {
+          color: var(--rotary-blue);
+          text-decoration: underline;
         }
         .selection-indicator {
           position: absolute;

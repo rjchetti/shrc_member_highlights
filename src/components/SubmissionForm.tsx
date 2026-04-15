@@ -4,7 +4,8 @@ import { collection, query, where, getDocs, addDoc, updateDoc, doc, serverTimest
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useLanguage } from '../contexts/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Upload, CheckCircle, Loader2, Globe } from 'lucide-react';
+import { Send, Upload, CheckCircle, Loader2, Globe, Info } from 'lucide-react';
+import RichTextEditor from './RichTextEditor';
 
 interface SubmissionData {
   id?: string;
@@ -14,6 +15,7 @@ interface SubmissionData {
   phoneNumber: string;
   professionalTitle: string;
   company: string;
+  highlightTitle: string;
   highlightText: string;
   photoUrl: string;
   monthYear: string;
@@ -35,6 +37,7 @@ const SubmissionForm = () => {
     phoneNumber: '',
     professionalTitle: '',
     company: '',
+    highlightTitle: '',
     highlightText: '',
     photoUrl: ''
   });
@@ -64,14 +67,15 @@ const SubmissionForm = () => {
         const docData = querySnapshot.docs[0].data() as SubmissionData;
         setExistingSubmissionId(querySnapshot.docs[0].id);
         setFormData({
-          fullName: docData.fullName,
-          clubName: docData.clubName,
-          email: docData.email,
-          phoneNumber: docData.phoneNumber,
-          professionalTitle: docData.professionalTitle,
-          company: docData.company,
-          highlightText: docData.highlightText,
-          photoUrl: docData.photoUrl
+          fullName: docData.fullName || '',
+          clubName: docData.clubName || '',
+          email: docData.email || '',
+          phoneNumber: docData.phoneNumber || '',
+          professionalTitle: docData.professionalTitle || '',
+          company: docData.company || '',
+          highlightTitle: docData.highlightTitle || '',
+          highlightText: docData.highlightText || '',
+          photoUrl: docData.photoUrl || ''
         });
       }
     } catch (err) {
@@ -212,13 +216,30 @@ const SubmissionForm = () => {
         </div>
 
         <div className="form-group">
-          <label>{t('form_highlight')}</label>
-          <textarea 
-            className="form-input textarea" 
+          <label>{t('form_highlight_title')}</label>
+          <input 
+            className="form-input" 
             required 
-            rows={4}
+            placeholder="e.g., Appointed as Regional Director"
+            value={formData.highlightTitle}
+            onChange={e => setFormData({ ...formData, highlightTitle: e.target.value })}
+          />
+        </div>
+
+        <div className="writing-tip-box">
+          <div className="tip-header">
+            <Info size={18} />
+            <span>{t('form_writing_tip_title')}</span>
+          </div>
+          <p>{t('form_writing_tip_body')}</p>
+        </div>
+
+        <div className="form-group">
+          <label>{t('form_highlight')}</label>
+          <RichTextEditor 
             value={formData.highlightText}
-            onChange={e => setFormData({ ...formData, highlightText: e.target.value })}
+            onChange={(val) => setFormData({ ...formData, highlightText: val })}
+            placeholder="Describe your achievement..."
           />
         </div>
 
@@ -285,17 +306,38 @@ const SubmissionForm = () => {
           background: #fff9db;
           border-left: 4px solid var(--rotary-gold);
           padding: 1rem;
-          margin-bottom: 2rem;
+          margin-bottom: 1.5rem;
           border-radius: 4px;
           font-size: 0.9rem;
           display: flex;
           align-items: center;
           gap: 0.75rem;
         }
+        .writing-tip-box {
+          background: #eef2ff;
+          border-radius: 8px;
+          padding: 1rem;
+          margin-bottom: 0.5rem;
+          border: 1px solid #c7d2fe;
+        }
+        .tip-header {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-weight: 700;
+          color: var(--rotary-royal);
+          margin-bottom: 0.5rem;
+        }
+        .writing-tip-box p {
+          font-size: 0.9rem;
+          color: #475569;
+          margin: 0;
+          line-height: 1.5;
+        }
         .highlight-form {
           display: flex;
           flex-direction: column;
-          gap: 1rem;
+          gap: 1.25rem;
         }
         label {
           display: block;
@@ -303,14 +345,12 @@ const SubmissionForm = () => {
           font-weight: 600;
           color: var(--rotary-royal);
         }
-        .textarea {
-          resize: vertical;
-        }
         .btn-full {
           width: 100%;
           justify-content: center;
           padding: 1rem;
           font-size: 1.1rem;
+          margin-top: 1rem;
         }
         .file-upload-zone {
           border: 2px dashed var(--rotary-grey);
