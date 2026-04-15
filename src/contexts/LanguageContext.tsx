@@ -10,8 +10,9 @@ interface LanguageContextType {
 
 const translations = {
   en: {
-    title: 'Rotary Member Highlights',
-    subtitle: 'Celebrating professional achievements in District 3650',
+    nav_title: 'Seoul Hanmaum Rotary Club presents Monthly Member Highlights',
+    title: 'Rotary Club Member Highlights',
+    subtitle: 'Celebrating members in Seoul Hanmaum Rotary Club and Rotary International District 3650',
     form_name: 'Full Name',
     form_club: 'Club Name',
     form_email: 'Email Address',
@@ -32,8 +33,9 @@ const translations = {
     error_msg: 'Something went wrong. Please try again.',
   },
   ko: {
-    title: '로타리 회원 하이라이트',
-    subtitle: '3650지구 회원들의 전문직 성취를 축하합니다',
+    nav_title: '서울 한마음 로타리 클럽: 이달의 회원 하이라이트',
+    title: '로타리 클럽 회원 하이라이트',
+    subtitle: '서울 한마음 로타리 클럽 및 국제로타리 3650지구 회원들의 성취를 축하합니다',
     form_name: '성함',
     form_club: '소속 클럽',
     form_email: '이메일 주소',

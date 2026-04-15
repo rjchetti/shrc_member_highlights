@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import Auth from './components/Auth';
 import SubmissionForm from './components/SubmissionForm';
@@ -6,10 +6,25 @@ import AdminPanel from './components/AdminPanel';
 import { Globe, Shield, Home, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { auth, ADMIN_EMAILS } from './lib/firebase';
+
 const MainContent = () => {
   const { t, language, setLanguage } = useLanguage();
   const [view, setView] = useState<'home' | 'admin'>('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState(auth.currentUser);
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((u) => {
+      setUser(u);
+      if (view === 'admin' && (!u || !ADMIN_EMAILS.includes(u.email || ''))) {
+        setView('home');
+      }
+    });
+    return () => unsubscribe();
+  }, [view]);
+
+  const isAdmin = user && ADMIN_EMAILS.includes(user.email || '');
 
   return (
     <div className="layout">
@@ -17,16 +32,18 @@ const MainContent = () => {
         <div className="nav-container">
           <div className="nav-logo">
             <img src="https://www.rotary.org/sites/all/themes/rotary_foundation/favicons/favicon-32x32.png" alt="Rotary" />
-            <span>SHRC Member Highlights</span>
+            <span>{t('nav_title')}</span>
           </div>
 
           <div className="nav-links desktop-only">
             <button className={`nav-btn ${view === 'home' ? 'active' : ''}`} onClick={() => setView('home')}>
               <Home size={18} /> {t('nav_home')}
             </button>
-            <button className={`nav-btn ${view === 'admin' ? 'active' : ''}`} onClick={() => setView('admin')}>
-              <Shield size={18} /> {t('nav_admin')}
-            </button>
+            {isAdmin && (
+              <button className={`nav-btn ${view === 'admin' ? 'active' : ''}`} onClick={() => setView('admin')}>
+                <Shield size={18} /> {t('nav_admin')}
+              </button>
+            )}
             <button className="nav-btn lang-btn" onClick={() => setLanguage(language === 'en' ? 'ko' : 'en')}>
               <Globe size={18} /> {language.toUpperCase()}
             </button>
@@ -47,7 +64,9 @@ const MainContent = () => {
             className="mobile-menu"
           >
             <button onClick={() => { setView('home'); setIsMobileMenuOpen(false); }}>{t('nav_home')}</button>
-            <button onClick={() => { setView('admin'); setIsMobileMenuOpen(false); }}>{t('nav_admin')}</button>
+            {isAdmin && (
+              <button onClick={() => { setView('admin'); setIsMobileMenuOpen(false); }}>{t('nav_admin')}</button>
+            )}
             <button onClick={() => setLanguage(language === 'en' ? 'ko' : 'en')}>{language.toUpperCase()}</button>
           </motion.div>
         )}

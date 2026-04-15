@@ -25,4 +25,10 @@ export const storage = getStorage(app);
 export const googleProvider = new GoogleAuthProvider();
 export const emailProvider = new EmailAuthProvider();
 
+// Admins (Marketing/PR Chairs)
+export const ADMIN_EMAILS = [
+  'rjchetti@gmail.com', // Added based on repo owner
+  // Add other chair emails here
+];
+
 export default app;
