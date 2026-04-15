@@ -1,0 +1,28 @@
+import { initializeApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider, EmailAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
+// The user will replace these with their own config from the Firebase Console
+const firebaseConfig = {
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || "placeholder-api-key",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || "shrc-member-highlights.firebaseapp.com",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || "shrc-member-highlights",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || "shrc-member-highlights.firebasestorage.app",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || "placeholder-messaging-id",
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || "placeholder-app-id"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+// Initialize Services
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
+
+// Providers
+export const googleProvider = new GoogleAuthProvider();
+export const emailProvider = new EmailAuthProvider();
+
+export default app;

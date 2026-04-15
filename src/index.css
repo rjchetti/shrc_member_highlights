@@ -1,0 +1,137 @@
+/* Rotary International Official Branding */
+:root {
+  --rotary-blue: #003399;
+  --rotary-gold: #FFCC00;
+  --rotary-royal: #013970;
+  --rotary-charcoal: #333333;
+  --rotary-grey: #DDDDDD;
+  --rotary-white: #FFFFFF;
+  
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.2);
+  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Open Sans', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
+  color: var(--rotary-charcoal);
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  color: var(--rotary-royal);
+}
+
+p {
+  font-family: 'Georgia', serif;
+  line-height: 1.6;
+}
+
+/* Premium Layout Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+  padding: 2rem;
+  transition: var(--transition);
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+}
+
+/* Button Styles */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: var(--rotary-blue);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--rotary-royal);
+  transform: scale(1.02);
+}
+
+.btn-secondary {
+  background-color: var(--rotary-gold);
+  color: var(--rotary-royal);
+}
+
+.btn-secondary:hover {
+  background-color: #e6b800;
+  transform: scale(1.02);
+}
+
+/* Floating Label Input */
+.form-group {
+  margin-bottom: 1.5rem;
+  position : relative;
+}
+
+.form-input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--rotary-grey);
+  border-radius: 8px;
+  background: transparent;
+  outline: none;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.form-input:focus {
+  border-color: var(--rotary-blue);
+  box-shadow: 0 0 0 4px rgba(0, 51, 153, 0.1);
+}
+
+/* Transitions */
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
