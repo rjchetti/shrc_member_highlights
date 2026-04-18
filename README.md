@@ -27,28 +27,26 @@ A high-performance, bilingual (EN/KR) solicitation system for the Seoul Hanmaum 
     VITE_FIREBASE_APP_ID=your_app_id
     ```
 
-2.  **Install & Run:**
-    ```bash
-    npm install
-    npm run dev
-    ```
 
-3.  **Firestore Security Rules:** Apply the following rules in the Firebase Console:
-    ```javascript
-    rules_version = '2';
-    service cloud.firestore {
-      match /databases/{database}/documents {
-        match /submissions/{submissionId} {
-          // Read: Allow if admin OR if it's the user's own submission
-          allow read: if request.auth != null; 
-          // Write: Allow if authenticated and matching userId
-          allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
-          allow update: if request.auth != null && resource.data.userId == request.auth.uid;
-        }
-      }
-    }
-    ```
-    *Note: For strict Admin-only access to all records, you can check for a specific email or use custom claims.*
+## Deployment & Configuration
 
-## Integration with ClubRunner
-In the Admin Dashboard, select the highlights you want to include, choose the output language (EN or KO), and click **"Copy ClubRunner HTML"**. This can be pasted directly into a Custom HTML block in the ClubRunner email editor.
+### 🚀 Base64 Storage Workaround (Free Tier)
+To keep this project on the **Firebase Free Tier** (no billing credit card required), we avoid using Cloud Storage. Instead:
+- Images are converted to **Base64 strings** automatically during submission.
+- **Limit:** Images must be under **1MB**.
+- Data is stored directly in Firestore.
+
+### 🛠️ Setup Instructions
+1.  **Environment Variables:** Create a `.env` file based on `.env.example` with your Firebase keys.
+2.  **Install Dependencies:** `npm install`
+3.  **Local Development:** `npm run dev`
+4.  **Build for Production:** `npm run build`
+5.  **Deploy to Hosting:** `npx firebase-tools deploy`
+
+### 🔒 Firestore Security Rules
+The project includes a `firestore.rules` file. Deploy it via the Firebase CLI or copy the content to the Firebase Console. It ensures:
+- Members can only see/edit their own submissions.
+- Admins (emails defined in `firebase.ts`) can see and delete everything.
+
+## 📱 Integration with ClubRunner
+In the Admin Dashboard, select the highlights you want to include and click **"Copy ClubRunner HTML"**. Paste this directly into a "Static/Custom HTML" block in the ClubRunner email editor.

@@ -19,7 +19,6 @@ const app = initializeApp(firebaseConfig);
 // Initialize Services
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-export const storage = getStorage(app);
 
 // Providers
 export const googleProvider = new GoogleAuthProvider();
@@ -28,6 +27,7 @@ export const emailProvider = new EmailAuthProvider();
 // Admins (Marketing/PR Chairs)
 export const ADMIN_EMAILS = [
   'rjchetti@gmail.com', // Added based on repo owner
+  'president@seoulhanmaumrotaryclub.org', // Club President
   // Add other chair emails here
 ];
 

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { db, storage, auth } from '../lib/firebase';
+import { db, auth } from '../lib/firebase';
 import { collection, query, where, getDocs, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { useLanguage } from '../contexts/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Upload, CheckCircle, Loader2, Globe, Info } from 'lucide-react';
+import { Send, Upload, CheckCircle, Loader2, Globe, Info, AlertTriangle } from 'lucide-react';
 import RichTextEditor from './RichTextEditor';
 
 interface SubmissionData {
@@ -43,6 +42,7 @@ const SubmissionForm = () => {
   });
 
   const [file, setFile] = useState<File | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
   const currentMonthYear = new Date().toISOString().slice(0, 7); // YYYY-MM
 
   const user = auth.currentUser;
@@ -83,10 +83,28 @@ const SubmissionForm = () => {
     }
   };
 
-  const handleFileUpload = async (file: File) => {
-    const storageRef = ref(storage, `highlights/${currentMonthYear}/${user?.uid}_${file.name}`);
-    const snapshot = await uploadBytes(storageRef, file);
-    return getDownloadURL(snapshot.ref);
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      if (selectedFile.size > 1024 * 1024) { // 1MB limit
+        setFileError(language === 'en' 
+          ? 'File size must be under 1MB for this free version.' 
+          : '파일 크기는 1MB 이하여야 합니다.');
+        setFile(null);
+      } else {
+        setFileError(null);
+        setFile(selectedFile);
+      }
+    }
+  };
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -97,7 +115,7 @@ const SubmissionForm = () => {
     try {
       let finalPhotoUrl = formData.photoUrl;
       if (file) {
-        finalPhotoUrl = await handleFileUpload(file);
+        finalPhotoUrl = await fileToBase64(file);
       }
 
       const payload = {
@@ -249,12 +267,20 @@ const SubmissionForm = () => {
             {formData.photoUrl && !file && (
               <img src={formData.photoUrl} alt="Previous" className="preview-small" />
             )}
-            <input 
-              type="file" 
-              accept="image/*" 
-              onChange={e => setFile(e.target.files?.[0] || null)}
+            <input
+              type="file"
+              id="photo"
+              accept="image/*"
+              onChange={onFileChange}
+              className={`file-input ${fileError ? 'error' : ''}`}
             />
-            <Upload size={20} className="upload-icon" />
+            {fileError && (
+              <p className="error-message">
+                <AlertTriangle size={14} />
+                {fileError}
+              </p>
+            )}
+            <p className="field-hint">{t('form_photo_hint')} (Max 1MB)</p>
           </div>
         </div>
 

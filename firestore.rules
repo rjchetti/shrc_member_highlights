@@ -1,0 +1,25 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Function to check if user is an admin
+    // Note: Emails should match those in App.tsx / firebase.ts
+    function isAdmin() {
+      return request.auth != null && 
+        (request.auth.token.email == 'rjchetti@gmail.com' || 
+         request.auth.token.email == 'president@seoulhanmaumrotaryclub.org');
+    }
+
+    match /submissions/{submissionId} {
+      // Create: Any authenticated user can create their own submission
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+      
+      // Read/Update: Submission owner or Admins
+      allow read, update: if request.auth != null && (resource.data.userId == request.auth.uid || isAdmin());
+      
+      // Delete: Admins only
+      allow delete: if isAdmin();
+    }
+  }
+}
