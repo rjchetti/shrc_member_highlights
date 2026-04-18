@@ -3,7 +3,7 @@ import { db, auth } from '../lib/firebase';
 import { collection, query, where, getDocs, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
 import { useLanguage } from '../contexts/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Upload, CheckCircle, Loader2, Globe, Info, AlertTriangle } from 'lucide-react';
+import { Send, CheckCircle, Loader2, Globe, Info, AlertTriangle } from 'lucide-react';
 import RichTextEditor from './RichTextEditor';
 
 interface SubmissionData {

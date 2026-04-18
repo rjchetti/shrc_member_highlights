@@ -7,6 +7,8 @@ export interface Submission {
   highlightText: string;
   photoUrl: string;
   id: string;
+  status: 'pending' | 'archived';
+  submittedAt: any; // Using any for Timestamp compatibility
 }
 
 export const generateClubRunnerHTML = (submissions: Submission[], language: 'en' | 'ko') => {

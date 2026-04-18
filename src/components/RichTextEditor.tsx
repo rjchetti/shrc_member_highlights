@@ -61,7 +61,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeh
         contentEditable
         onInput={handleInput}
         onBlur={handleInput}
-        placeholder={placeholder}
+        data-placeholder={placeholder}
       />
       <style>{`
         .rich-editor-container {
@@ -107,7 +107,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange, placeh
           line-height: 1.6;
         }
         .rich-editor-content[contenteditable]:empty:before {
-          content: attr(placeholder);
+          content: attr(data-placeholder);
           color: #94a3b8;
         }
         .rich-editor-content a {
