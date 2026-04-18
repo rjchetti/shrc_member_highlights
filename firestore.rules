@@ -8,7 +8,8 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null && 
         (request.auth.token.email == 'rjchetti@gmail.com' || 
-         request.auth.token.email == 'president@seoulhanmaumrotaryclub.org');
+         request.auth.token.email == 'president@seoulhanmaumrotaryclub.org' ||
+         request.auth.token.email == 'marketing@hanmaeumrotaryclub.org');
     }
 
     match /submissions/{submissionId} {

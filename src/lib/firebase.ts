@@ -27,6 +27,7 @@ export const emailProvider = new EmailAuthProvider();
 export const ADMIN_EMAILS = [
   'rjchetti@gmail.com', // Added based on repo owner
   'president@seoulhanmaumrotaryclub.org', // Club President
+  'marketing@hanmaeumrotaryclub.org', // Marketing/PR Chair
   // Add other chair emails here
 ];
 
